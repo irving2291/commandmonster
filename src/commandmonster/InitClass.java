@@ -31,10 +31,6 @@ public class InitClass {
         List<Pokemon> listPokemon = new ArrayList<Pokemon>();
         listPokemon.add(BasicMonsters.pikachu());
         listPokemon.add(BasicMonsters.ratata());
-        listPokemon.add(BasicMonsters.pikachu());
-        listPokemon.add(BasicMonsters.pikachu());
-        listPokemon.add(BasicMonsters.pikachu());
-        listPokemon.add(BasicMonsters.pikachu());
         PokemonTrainer trainer = new PokemonTrainer(listPokemon, 1);
         return trainer;
     }
@@ -43,6 +39,7 @@ public class InitClass {
     {
         List<Pokemon> listPokemon = new ArrayList<Pokemon>();
         listPokemon.add(BasicMonsters.ratata());
+        listPokemon.add(BasicMonsters.charmander());
         PokemonTrainer trainer = new PokemonTrainer(listPokemon, 2);
         return trainer;
     }

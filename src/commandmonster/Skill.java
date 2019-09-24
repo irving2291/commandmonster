@@ -25,14 +25,26 @@ public class Skill {
         this.name = name;
     }
     
-    public void run(Pokemon pokemon, int damage)
+    /**
+     * 
+     * @param pokemon
+     * @param damage
+     * @return if true pokemon is dead, false pokemon continue life
+     */
+    public boolean run(Pokemon pokemon, int damage)
     {
         int currentHp = pokemon.getHpCurrent();
         int totalDamage = damage + this.getDamage();
         if (pokemon.isVulnerable(this)) {
             totalDamage = totalDamage*MULTIPLIER_CRITIC_DAMAGE;
         }
-        pokemon.setHpCurrent(totalDamage);
+        currentHp -= totalDamage;
+        if (currentHp < 0) {
+            pokemon.setHpCurrent(0);
+            return true;
+        }
+        pokemon.setHpCurrent(currentHp);
+        return false;
     }
 
     public String getName() {

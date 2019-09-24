@@ -19,7 +19,7 @@ public class Pokemon {
     private int hpCurrent;
     private int dice;
     private int level;
-    private List<Skill> vulnerabilities;
+    private List<String> vulnerabilities;
     
     // abilities
     private int speed;
@@ -136,19 +136,19 @@ public class Pokemon {
         this.hpCurrent = hpTotal;
     }
 
-    public List<Skill> getVulnerabilities() {
+    public List<String> getVulnerabilities() {
         return vulnerabilities;
     }
 
-    public void setVulnerabilities(List<Skill> vulnerabilities) {
+    public void setVulnerabilities(List<String> vulnerabilities) {
         this.vulnerabilities = vulnerabilities;
     }
     
     public boolean isVulnerable(Skill skill)
     {
         boolean result = false;
-        for (Skill vulnerability : vulnerabilities) {
-            if (vulnerability.getType().equals(skill.getType())) {
+        for (String vulnerability : vulnerabilities) {
+            if (vulnerability.equals(skill.getType())) {
                 result = true;
                 break;
             }

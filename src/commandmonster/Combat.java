@@ -63,11 +63,21 @@ public class Combat {
      * view interfaz pokemon
      * @param trainer 
      */
-    public void interfaz(PokemonTrainer trainer)
+    public int interfaz(PokemonTrainer trainer)
     {
+        System.out.println("##################################################################");
         Pokemon pokemon = trainer.getFirstPokemon();
-        System.out.println("pokemon: " + pokemon.getName());
-        System.out.println(pokemon.getHpCurrent()+"/"+pokemon.getHp());
+        String actual;
+        if (trainer.getTypePlayer() == 1) {
+            actual = "you turn";
+        } else {
+            actual = "opponent turn";
+        }
+
+        System.out.println(actual);
+        System.out.println("pokemon: " + pokemon.getName() + "            hp:" + pokemon.getHpCurrent()+"/"+pokemon.getHp());
+        System.out.println("1: attack | 2: change pokemon | 3: scape | 0: pass");
+        return new Scanner(System.in).nextInt();
     }
     
     /**
@@ -76,20 +86,10 @@ public class Combat {
      */
     private void turn(PokemonTrainer turnPokemonTrainer, PokemonTrainer oppPokemonTrainer)
     {
+        Scanner scan = new Scanner(System.in);
         Pokemon turnPokemon = turnPokemonTrainer.getFirstPokemon();
         Pokemon opponentPokemon = oppPokemonTrainer.getFirstPokemon();
-        String actual;
-        if (turnPokemonTrainer.getTypePlayer() == 1) {
-            actual = "you turn";
-        } else {
-            actual = "opponent turn";
-        }
-
-        System.out.println(actual);
-        interfaz(turnPokemonTrainer);
-        System.out.println("1: attack | 2: change pokemon | 3: scape | 0: pass");
-        Scanner scan = new Scanner(System.in);
-        int entry = scan.nextInt();
+        int entry = interfaz(turnPokemonTrainer);
         
         /**
          * first action is attack
@@ -133,7 +133,11 @@ public class Combat {
      */
     private void attack(Skill skill, Pokemon turnPokemon, Pokemon opponentPokemon)
     {
-        skill.run(opponentPokemon, turnPokemon.getDamage());
+        boolean isDead = skill.run(opponentPokemon, turnPokemon.getDamage());
+        if (isDead) {
+            System.out.println("opponent have change pokemon");
+            changePokemon(this.opponent);
+        }
         System.out.println("Tu ataque fue muy efectivo");
     }
     
@@ -145,8 +149,10 @@ public class Combat {
         List<Pokemon> belt = trainer.getBeltPokemons();
         int c = 0;
         for (Pokemon pokemon : belt) {
-            System.out.println(c + ": " + pokemon.getName());
-            c++;
+            if (pokemon.getHpCurrent() > 0) {
+                System.out.println(c + ": " + pokemon.getName());
+                c++;
+            }
         }
         int selected = new Scanner(System.in).nextInt();
         trainer.setFirstPokemon(belt.get(selected));
