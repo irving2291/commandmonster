@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package commandmonster;
 
 import java.util.List;
@@ -11,9 +7,10 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author irvin
+ * @author irving
  */
 public class Combat {
+    static final int PROBABILITY_SCAPE = 20;//20%
     private PokemonTrainer im;
     private PokemonTrainer opponent;
     
@@ -31,59 +28,141 @@ public class Combat {
         this.opponent = opponent;
     }
     
+    /**
+     * execute combat
+     */
     public void run()
     {
         this.status = 1;
-        Pokemon[] turnInBattle = new Pokemon[2];
-        myPokemon = this.im.getFirstPokemon();
-        opponentPokemon = this.opponent.getFirstPokemon();
+        PokemonTrainer[] turnInBattle = new PokemonTrainer[2];
+        myPokemon = im.getFirstPokemon();
+        opponentPokemon = opponent.getFirstPokemon();
 
-        /**
-         * if my pokemon is greater or equal to the opponent pokemon
-         * in turn is first
-         */
-        if (myPokemon.RollInitiative() >= opponentPokemon.RollInitiative()) {
-            turnInBattle[0] = myPokemon;
-            turnInBattle[1] = opponentPokemon;
-        } else {
-            turnInBattle[0] = myPokemon;
-            turnInBattle[1] = opponentPokemon;
-        }
         do{
+            /**
+            * if my pokemon is greater or equal to the opponent pokemon
+            * in turn is first
+            */
+           if (myPokemon.RollInitiative() >= opponentPokemon.RollInitiative()) {
+               turnInBattle[0] = im;
+               turnInBattle[1] = opponent;
+           } else {
+               turnInBattle[0] = opponent;
+               turnInBattle[1] = im;
+           }
+        
             //combat process
-            turn(turnInBattle[0]);
-            turn(turnInBattle[1]);
+            turn(turnInBattle[0], turnInBattle[1]);
+            if (this.status == 1) 
+                turn(turnInBattle[1], turnInBattle[0]);
             
         }while(this.status == 1);
+    }
+    
+    /**
+     * view interfaz pokemon
+     * @param trainer 
+     */
+    public void interfaz(PokemonTrainer trainer)
+    {
+        Pokemon pokemon = trainer.getFirstPokemon();
+        System.out.println("pokemon: " + pokemon.getName());
+        System.out.println(pokemon.getHpCurrent()+"/"+pokemon.getHp());
     }
     
     /**
      * turn in combat
      * @param pokemon 
      */
-    private void turn(Pokemon pokemon)
+    private void turn(PokemonTrainer turnPokemonTrainer, PokemonTrainer oppPokemonTrainer)
     {
-        System.out.println(pokemon.getName() + "  your turn.");
+        Pokemon turnPokemon = turnPokemonTrainer.getFirstPokemon();
+        Pokemon opponentPokemon = oppPokemonTrainer.getFirstPokemon();
+        String actual;
+        if (turnPokemonTrainer.getTypePlayer() == 1) {
+            actual = "you turn";
+        } else {
+            actual = "opponent turn";
+        }
+
+        System.out.println(actual);
+        interfaz(turnPokemonTrainer);
         System.out.println("1: attack | 2: change pokemon | 3: scape | 0: pass");
-        int entry = new Scanner(System.in).nextInt();
+        Scanner scan = new Scanner(System.in);
+        int entry = scan.nextInt();
         
         /**
          * first action is attack
          */
         switch(entry) {
             case 1:
-                attack(pokemon);
+                int c = 0;//count to mark number of skill
+                
+                /**
+                 * print skill of pokemon in turn
+                 */
+                for (Skill skill : turnPokemon.getSkills()) {
+                    System.out.println(c + ": " + skill.getName());
+                    c++;
+                }
+                
+                /**
+                 * insert number of skill selected
+                 */
+                int select = scan.nextInt();
+                
+                /**
+                 * action of attack
+                 */
+                attack(turnPokemon.getSkills().get(select), turnPokemon, opponentPokemon);
+                break;
+            case 2:
+                changePokemon(turnPokemonTrainer);
+                break;
+            case 3:
+                scape();
+                break;
             default:
                 System.out.println("pass");
         }
     }
     
     /**
-     * action can be
+     * action of attack
      * @param pokemon 
      */
-    private void attack(Pokemon pokemon)
+    private void attack(Skill skill, Pokemon turnPokemon, Pokemon opponentPokemon)
     {
+        skill.run(opponentPokemon, turnPokemon.getDamage());
         System.out.println("Tu ataque fue muy efectivo");
+    }
+    
+    /**
+     * action of change pokemon
+     */
+    private void changePokemon(PokemonTrainer trainer)
+    {
+        List<Pokemon> belt = trainer.getBeltPokemons();
+        int c = 0;
+        for (Pokemon pokemon : belt) {
+            System.out.println(c + ": " + pokemon.getName());
+            c++;
+        }
+        int selected = new Scanner(System.in).nextInt();
+        trainer.setFirstPokemon(belt.get(selected));
+    }
+    
+    /**
+     * action of scape
+     */
+    private void scape()
+    {
+        /**
+         * probability of scape from combat
+         */
+        if (Probability.rollD100() >= PROBABILITY_SCAPE) {
+            this.status = 0;
+            System.out.println("you have scape successfully...");
+        }
     }
 }

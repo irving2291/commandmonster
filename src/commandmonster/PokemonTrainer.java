@@ -58,4 +58,14 @@ public class PokemonTrainer {
     public void setTypePlayer(int typePlayer) {
         this.typePlayer = typePlayer;
     }
+
+    public List<Pokemon> getBeltPokemons() {
+        return beltPokemons;
+    }
+
+    public void setBeltPokemons(List<Pokemon> beltPokemons) {
+        this.beltPokemons = beltPokemons;
+    }
+    
+    
 }

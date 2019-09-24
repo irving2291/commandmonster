@@ -20,4 +20,9 @@ public class Probability {
     {
         return getRollDice(20);
     }
+    
+    public static int rollD100()
+    {
+        return getRollDice(100);
+    }
 }

@@ -42,7 +42,7 @@ public class InitClass {
     public static PokemonTrainer opponent()
     {
         List<Pokemon> listPokemon = new ArrayList<Pokemon>();
-        listPokemon.add(BasicMonsters.pikachu());
+        listPokemon.add(BasicMonsters.ratata());
         PokemonTrainer trainer = new PokemonTrainer(listPokemon, 2);
         return trainer;
     }
