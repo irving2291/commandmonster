@@ -23,7 +23,7 @@ public class BasicMonsters {
         pokemon.setName("pikachu");
         pokemon.setRace("pikachu");
         pokemon.setType("Electrico");
-        pokemon.setHpTotal(120);
+        pokemon.setHpTotal(130);
         pokemon.setDice(6);
         pokemon.setLevel(Probability.getRollDice(5));
         
@@ -32,6 +32,8 @@ public class BasicMonsters {
         pokemon.setSkills(listSkill);
         
         List<String> listVul = new ArrayList<>();
+        
+        // vulnerabilidades
         listVul.add("water");
         listVul.add("earth");
         pokemon.setVulnerabilities(listVul);

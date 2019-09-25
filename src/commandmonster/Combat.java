@@ -76,6 +76,7 @@ public class Combat {
 
         System.out.println(actual);
         System.out.println("pokemon: " + pokemon.getName() + "            hp:" + pokemon.getHpCurrent()+"/"+pokemon.getHp());
+        System.out.println("level: " + pokemon.getLevel());
         System.out.println("1: attack | 2: change pokemon | 3: scape | 0: pass");
         return new Scanner(System.in).nextInt();
     }

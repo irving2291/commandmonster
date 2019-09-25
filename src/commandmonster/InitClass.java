@@ -28,7 +28,7 @@ public class InitClass {
     
     public static PokemonTrainer im()
     {
-        List<Pokemon> listPokemon = new ArrayList<Pokemon>();
+        List<Pokemon> listPokemon = new ArrayList<>();
         listPokemon.add(BasicMonsters.pikachu());
         listPokemon.add(BasicMonsters.ratata());
         PokemonTrainer trainer = new PokemonTrainer(listPokemon, 1);
@@ -37,7 +37,7 @@ public class InitClass {
     
     public static PokemonTrainer opponent()
     {
-        List<Pokemon> listPokemon = new ArrayList<Pokemon>();
+        List<Pokemon> listPokemon = new ArrayList<>();
         listPokemon.add(BasicMonsters.ratata());
         listPokemon.add(BasicMonsters.charmander());
         PokemonTrainer trainer = new PokemonTrainer(listPokemon, 2);

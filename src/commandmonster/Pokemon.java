@@ -50,13 +50,13 @@ public class Pokemon {
      */
     public int RollInitiative()
     {
-       return Probability.rollD20() + speed; 
+       return Probability.rollD20() + getSpeed(); 
     }
     
     public int getDamage()
     {
         // remove when have make structure of dame by skill
-        return 10;
+        return 10 * level;
     }
 
     public String getName() {
@@ -108,7 +108,7 @@ public class Pokemon {
     }
 
     public int getSpeed() {
-        return speed;
+        return speed * level;
     }
 
     public void setSpeed(int speed) {
@@ -132,8 +132,7 @@ public class Pokemon {
     }
     
     public void setHpTotal(int hpTotal) {
-        this.hp = hpTotal;
-        this.hpCurrent = hpTotal;
+        this.hp = this.hpCurrent = hpTotal + getInitHP();
     }
 
     public List<String> getVulnerabilities() {
