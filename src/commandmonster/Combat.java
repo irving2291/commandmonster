@@ -57,6 +57,14 @@ public class Combat {
                 turn(turnInBattle[1], turnInBattle[0]);
             
         }while(this.status == 1);
+        
+        if (this.status == 2) {
+            if (im.havePokemonAvailable()) {
+                System.out.println("the fight is over, the winner is you");
+            } else {
+                System.out.println("the fight is over, the winner is the opponent");
+            }
+        }
     }
     
     /**
@@ -78,7 +86,9 @@ public class Combat {
         System.out.println("pokemon: " + pokemon.getName() + "            hp:" + pokemon.getHpCurrent()+"/"+pokemon.getHp());
         System.out.println("level: " + pokemon.getLevel());
         System.out.println("1: attack | 2: change pokemon | 3: scape | 0: pass");
-        return new Scanner(System.in).nextInt();
+        System.out.println("##################################################################");
+        int entry = new Scanner(System.in).nextInt();
+        return entry;
     }
     
     /**
@@ -88,9 +98,14 @@ public class Combat {
     private void turn(PokemonTrainer turnPokemonTrainer, PokemonTrainer oppPokemonTrainer)
     {
         Scanner scan = new Scanner(System.in);
-        Pokemon turnPokemon = turnPokemonTrainer.getFirstPokemon();
-        Pokemon opponentPokemon = oppPokemonTrainer.getFirstPokemon();
-        int entry = interfaz(turnPokemonTrainer);
+        int entry = 2;
+        if (!turnPokemonTrainer.getFirstPokemon().isAlive()) {
+            System.out.println(turnPokemonTrainer.getFirstPokemon().getName()
+                    + " can no longer continue.");
+            System.out.println(oppPokemonTrainer.getMessageTypePlayer() + " have change pokemon.");
+        } else {
+            entry = interfaz(turnPokemonTrainer);
+        }
         
         /**
          * first action is attack
@@ -102,8 +117,13 @@ public class Combat {
                 /**
                  * print skill of pokemon in turn
                  */
-                for (Skill skill : turnPokemon.getSkills()) {
-                    System.out.println(c + ": " + skill.getName());
+                for (Skill skill : turnPokemonTrainer.getFirstPokemon().getSkills()) {
+                    if (skill.getPowerPoint() > 0) {
+                        System.out.println(c + ": " + skill.getName() + ": " + skill.getPowerPoint());
+                    }
+                    if (c == 3) {
+                        break;
+                    }
                     c++;
                 }
                 
@@ -115,7 +135,7 @@ public class Combat {
                 /**
                  * action of attack
                  */
-                attack(turnPokemon.getSkills().get(select), turnPokemon, opponentPokemon);
+                attack(turnPokemonTrainer.getFirstPokemon().getSkills().get(select), turnPokemonTrainer, oppPokemonTrainer);
                 break;
             case 2:
                 changePokemon(turnPokemonTrainer);
@@ -132,14 +152,9 @@ public class Combat {
      * action of attack
      * @param pokemon 
      */
-    private void attack(Skill skill, Pokemon turnPokemon, Pokemon opponentPokemon)
+    private void attack(Skill skill, PokemonTrainer turnPokemonTrainer, PokemonTrainer oppPokemonTrainer)
     {
-        boolean isDead = skill.run(opponentPokemon, turnPokemon.getDamage());
-        if (isDead) {
-            System.out.println("opponent have change pokemon");
-            changePokemon(this.opponent);
-        }
-        System.out.println("Tu ataque fue muy efectivo");
+        boolean isDead = skill.run(oppPokemonTrainer.getFirstPokemon(), turnPokemonTrainer.getFirstPokemon().getDamage());
     }
     
     /**
@@ -148,15 +163,21 @@ public class Combat {
     private void changePokemon(PokemonTrainer trainer)
     {
         List<Pokemon> belt = trainer.getBeltPokemons();
-        int c = 0;
+        int c = 0, available = 0;
         for (Pokemon pokemon : belt) {
             if (pokemon.getHpCurrent() > 0) {
-                System.out.println(c + ": " + pokemon.getName());
-                c++;
+                System.out.println(c + ": " + pokemon.getName() + " ---> " + pokemon.getHpCurrent() + "/" + pokemon.getHp() + "HP");
+                available++;
             }
+            c++;
         }
-        int selected = new Scanner(System.in).nextInt();
-        trainer.setFirstPokemon(belt.get(selected));
+        if (available > 0) {
+            int selected = new Scanner(System.in).nextInt();
+            trainer.setFirstPokemon(belt.get(selected));
+        } else {
+            this.status = 2;
+        }
+        
     }
     
     /**

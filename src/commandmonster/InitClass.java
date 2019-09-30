@@ -6,6 +6,7 @@
 package commandmonster;
 
 import commandmonster.makesmonsters.BasicMonsters;
+import commandmonster.makesmonsters.BasicTrainer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,20 +29,13 @@ public class InitClass {
     
     public static PokemonTrainer im()
     {
-        List<Pokemon> listPokemon = new ArrayList<>();
-        listPokemon.add(BasicMonsters.pikachu());
-        listPokemon.add(BasicMonsters.ratata());
-        PokemonTrainer trainer = new PokemonTrainer(listPokemon, 1);
-        return trainer;
+        return BasicTrainer.ash(1);
+        
     }
     
     public static PokemonTrainer opponent()
     {
-        List<Pokemon> listPokemon = new ArrayList<>();
-        listPokemon.add(BasicMonsters.ratata());
-        listPokemon.add(BasicMonsters.charmander());
-        PokemonTrainer trainer = new PokemonTrainer(listPokemon, 2);
-        return trainer;
+        return BasicTrainer.Cynthia(2);
     }
     
 }

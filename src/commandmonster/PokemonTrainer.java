@@ -6,6 +6,7 @@
 package commandmonster;
 
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -23,6 +24,25 @@ public class PokemonTrainer {
     public PokemonTrainer()
     {
         //
+    }
+    
+    public String getMessageTypePlayer()
+    {
+        if (typePlayer == 1){
+            return "you";
+        }
+        return "opponent";
+    }
+    
+    public boolean havePokemonAvailable()
+    {
+        int available = 0;
+        for (Pokemon pokemon : beltPokemons) {
+            if (pokemon.getHpCurrent() > 0) {
+                available++;
+            }
+        }
+        return available > 0;
     }
     
     /**

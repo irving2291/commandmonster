@@ -10,19 +10,27 @@ package commandmonster;
  * @author irvin
  */
 public class Skill {
-    static final int MULTIPLIER_CRITIC_DAMAGE = 2;//*2
+    static final int MULTIPLIER_CRITIC_DAMAGE = 40;//*40%
     private String name;
     private String type;
     private int damage;
+    private int powerPoint;
+    private String typeSb;
+    
+   
     
     public Skill()
     {
         //
     }
     
-    public Skill(String name, String type, int damage)
+    public Skill(String name, String type, int damage , int powerPoint ,String typeSb )
     {
         this.name = name;
+        this.type = type;
+        this.damage = damage;
+        this.powerPoint = powerPoint;
+        this.typeSb = typeSb;
     }
     
     /**
@@ -33,15 +41,20 @@ public class Skill {
      */
     public boolean run(Pokemon pokemon, int damage)
     {
+        this.powerPoint -= 1;
         int currentHp = pokemon.getHpCurrent();
         int totalDamage = damage + this.getDamage();
         if (pokemon.isVulnerable(this)) {
-            totalDamage = totalDamage*MULTIPLIER_CRITIC_DAMAGE;
+            totalDamage = totalDamage + (int) Math.ceil((totalDamage * MULTIPLIER_CRITIC_DAMAGE)/100);
         }
         currentHp -= totalDamage;
         if (currentHp < 0) {
             pokemon.setHpCurrent(0);
+            System.out.println("your attack has been deadly.");
             return true;
+        }
+        if (pokemon.isVulnerable(this)) {
+            System.out.println("the attack has been very effective.");
         }
         pokemon.setHpCurrent(currentHp);
         return false;
@@ -70,4 +83,21 @@ public class Skill {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+
+    public int getPowerPoint() {
+        return powerPoint;
+    }
+
+    public void setPowerPoint(int powerPoint) {
+        this.powerPoint = powerPoint;
+    }
+
+    public String getTypeSb() {
+        return typeSb;
+    }
+
+    public void setTypeSb(String typeSb) {
+        this.typeSb = typeSb;
+    }
+    
 }

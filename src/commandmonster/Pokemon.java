@@ -23,6 +23,10 @@ public class Pokemon {
     
     // abilities
     private int speed;
+    private int basicDefense;
+    private int basicAttack;
+    private int specialDefense;
+    private int specialAttack;
     
     private List<Skill> skills;
     
@@ -35,11 +39,16 @@ public class Pokemon {
         hpCurrent = hp;
     }
     
+    public boolean isAlive()
+    {
+        return hpCurrent > 0;
+    }
+    
     private int getInitHP()
     {
         int total = 0;
         for (int i = 0; i < level; i++) {
-            total += Probability.getRollDice(this.dice);
+            total += (Probability.getRollDice(this.dice) + 10);
         }
         return total;
     }
@@ -153,6 +162,38 @@ public class Pokemon {
             }
         }
         return result;
+    }
+
+    public int getBasicDefense() {
+        return basicDefense;
+    }
+
+    public void setBasicDefense(int basicDefense) {
+        this.basicDefense = basicDefense;
+    }
+
+    public int getBasicAttack() {
+        return basicAttack;
+    }
+
+    public void setBasicAttack(int basicAttack) {
+        this.basicAttack = basicAttack;
+    }
+
+    public int getSpecialDefense() {
+        return specialDefense;
+    }
+
+    public void setSpecialDefense(int specialDefense) {
+        this.specialDefense = specialDefense;
+    }
+
+    public int getSpecialAttack() {
+        return specialAttack;
+    }
+
+    public void setSpecialAttack(int specialAttack) {
+        this.specialAttack = specialAttack;
     }
     
 }
